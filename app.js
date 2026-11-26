@@ -1,4 +1,4 @@
-var W="https://square-star-8d92.abdcode.workers.dev",V="BJhu9gl37CrMFnD4NBW1KUUeDd8aZR6pTebs0C8rKT6N7LZBJT81SjbWLlIRt8_3adThX0NI6abEMBkz9Tk2kfY";
+var W="https://square-star-8d92.abdcode.workers.dev",V="BPCw2k4x7m9N3vR8qL1zX6yT5wP2jH4gF8dS3aK9mL7nB5vC2xZ8qW4eR6tY1uI3oP7aS9dF2gH5jK8lM6nB4vC1xZ3qW7eR9tY2uI5oP8a";
 var K=["morning","evening","sleep"],c="morning",i=0,n=0,S={};
 function $(x){return document.getElementById(x)}
 try{S=JSON.parse(localStorage.getItem("adhkar")||"{}")}catch(e){S={}}
@@ -20,7 +20,14 @@ var R=document.documentElement,dk=matchMedia("(prefers-color-scheme:dark)").matc
 function th(){R.dataset.theme=dk?"dark":"light";$("th").textContent=dk?"☀":"☾"}
 $("th").onclick=function(){dk=!dk;th()};th();
 
-function b64(s){var p="=".repeat((4-s.length%4)%4),r=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from(r,function(x){return x.charCodeAt(0)})}
+function b64(s){
+  var clean=String(s||"").trim().replace(/\s+/g,"").replace(/-/g,"+").replace(/_/g,"/");
+  var pad="=".repeat((4-(clean.length%4))%4);
+  var raw=atob(clean+pad);
+  var arr=new Uint8Array(raw.length);
+  for(var j=0;j<raw.length;j++)arr[j]=raw.charCodeAt(j);
+  return arr;
+}
 function sync(){if(!navigator.serviceWorker)return;
 try{caches.open("adhkar-set").then(function(x){x.put("/adhkar-settings",new Response(JSON.stringify(S)))})}catch(e){}
 return navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription()}).then(function(s){
@@ -32,7 +39,9 @@ if(V.indexOf("YOUR")>=0||W.indexOf("YOUR")>=0){st("لم يُضبط عنوان ا
 try{var p=await Notification.requestPermission();if(p!=="granted"){st("لم يُسمح بالإشعارات. يمكنك السماح بها من إعدادات الجهاز.");return}
 var r=await navigator.serviceWorker.ready;
 var old=await r.pushManager.getSubscription();if(old){try{await old.unsubscribe()}catch(e){}}
-var s=await r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64(V)});
+var key=b64(V);
+if(key.length!==65){st("خطأ: طول مفتاح P-256 غير صحيح ("+key.length+" بايت بدل 65)");return}
+var s=await r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key});
 await sync();ok();st("تم تفعيل الإشعارات بنجاح.")}catch(e){st("خطأ: "+(e&&e.message?e.message:"تعذّر تفعيل الإشعارات"))}};
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").then(sync).catch(function(){});
 if(!(matchMedia("(display-mode: standalone)").matches||navigator.standalone))$("hint").hidden=false;
