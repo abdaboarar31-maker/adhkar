@@ -1,4 +1,7 @@
-var W="https://adhkar-push.abdcode.workers.dev",V="BML_jNhfyPXrEkyhtViJ_tGenuXufsE1tnoUoZL9WPnkovSxDd3gLU4A3bwaYKV_ssTcOdSlHeI61PoPADw7gOw";try{S=JSON.parse(localStorage.getItem("adhkar")||"{}")}catch(e){S={}}
+var W="https://adhkar-push.abdcode.workers.dev",V="BML_jNhfyPXrEkyhtViJ_tGenuXufsE1tnoUoZL9WPnkovSxDd3gLU4A3bwaYKV_ssTcOdSlHeI61PoPADw7gOw";
+var K=["morning","evening","sleep"],c="morning",i=0,n=0,S={};
+function $(x){return document.getElementById(x)}
+try{S=JSON.parse(localStorage.getItem("adhkar")||"{}")}catch(e){S={}}
 K.forEach(function(k){S[k]=S[k]||{t:D[k].t,on:true}});
 var q=location.search.match(/c=(\w+)/);if(q&&D[q[1]])c=q[1];
 function ok(){$("en").classList.add("done");$("et").textContent="الإشعارات مفعّلة"}
