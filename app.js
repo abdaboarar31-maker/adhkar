@@ -1,4 +1,5 @@
-var W="https://YOUR-WORKER.workers.dev",V="YOUR_VAPID_PUBLIC_KEY";
+var W="https://adhkar-push.abdcode.workers.dev",V="BML_jNhfyPXrEkyhtViJ_tGenuXufsE1tnoUoZL9WPnkovSxDd3gLU4A3bwaYKV_ssTcOdSlHeI61PoPADw7gOw
+";
 var K=["morning","evening","sleep"],c="morning",i=0,n=0,S={};
 function $(x){return document.getElementById(x)}
 try{S=JSON.parse(localStorage.getItem("adhkar")||"{}")}catch(e){S={}}
