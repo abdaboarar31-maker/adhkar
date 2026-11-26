@@ -1,0 +1,57 @@
+:root{--bg:#f3f1f8;--card:#fff;--ink:#1c1b2e;--mute:#6d6a85;--line:#e1ddee;--a:#c98a1b;--a2:#fbeccb;--on:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0d1a;--card:#181730;--ink:#ece9fa;--mute:#9b97b8;--line:#2a2848;--a2:#2c2410}}
+:root[data-theme="dark"]{--bg:#0e0d1a;--card:#181730;--ink:#ece9fa;--mute:#9b97b8;--line:#2a2848;--a2:#2c2410}
+body[data-c="morning"]{--a:#c98a1b}
+body[data-c="evening"]{--a:#c4566b;--a2:#f9dde3}
+body[data-c="sleep"]{--a:#5b52c9;--a2:#dedbf8}
+:root[data-theme="dark"] body[data-c="morning"]{--a:#e3a935}
+:root[data-theme="dark"] body[data-c="evening"]{--a2:#35161f}
+:root[data-theme="dark"] body[data-c="sleep"]{--a2:#1d1a42}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+html,body{background:var(--bg);color:var(--ink);font-family:Tajawal,system-ui,sans-serif;transition:background .3s}
+.app{max-width:440px;margin:0 auto;padding:16px 16px 40px}
+header{display:flex;justify-content:space-between;align-items:center;padding:8px 2px 14px}
+h1{font-family:Amiri,serif;font-size:30px;color:var(--a)}
+.ic{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:18px;cursor:pointer}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:5px}
+.tab{border:0;background:none;color:var(--mute);font:500 15px Tajawal;padding:10px 4px;border-radius:12px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--a);color:var(--on)}
+.ring{position:relative;width:200px;height:200px;margin:22px auto 8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:10}
+.tr{stroke:var(--line)}.pg{stroke:var(--a);stroke-linecap:round;transition:stroke-dashoffset .35s}
+.ring b{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font:700 44px Tajawal}
+.ring small{font:400 13px Tajawal;color:var(--mute)}
+.dhikr,.about{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 18px;text-align:center}
+.dhikr p{font-family:Amiri,serif;font-size:25px;line-height:2.1}
+.about p{font-size:15px;line-height:2;color:var(--mute)}
+.src{margin-top:10px;font-size:13px;color:var(--mute)}
+.nav{display:flex;justify-content:space-between;align-items:center;margin:14px 2px}
+.nav button{border:1px solid var(--line);background:var(--card);color:var(--ink);font:500 14px Tajawal;padding:9px 16px;border-radius:12px;cursor:pointer}
+.nav span{color:var(--mute);font-size:14px}
+h2{font-size:17px;margin:26px 2px 10px}
+.set{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:4px 16px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+.row input[type=time]{font:500 16px Tajawal;color:var(--ink);background:var(--a2);border:0;border-radius:10px;padding:7px 10px}
+.sw{position:relative;width:46px;height:26px;flex:none}
+.sw input{opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer;z-index:1}
+.sw i{position:absolute;inset:0;border-radius:20px;background:var(--line);transition:.2s}
+.sw i::after{content:"";position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked+i{background:var(--a)}
+.sw input:checked+i::after{right:23px}
+.test{width:100%;margin-top:14px;border:0;background:var(--a);color:var(--on);font:700 16px Tajawal;padding:14px;border-radius:14px;cursor:pointer}
+.test{display:flex;align-items:center;justify-content:center;gap:10px;transition:transform .15s,background .3s}
+.test:active{transform:scale(.96)}
+.bell{transform-origin:50% 12%}
+.test.go{animation:pulse .8s ease-out}
+.test.go .bell{animation:swing .9s ease-in-out}
+.test.done{background:var(--a2);color:var(--ink)}
+.test.done .bell{color:var(--a);animation:pop .5s ease-out}
+@keyframes swing{0%{rotate:0deg}20%{rotate:22deg}40%{rotate:-18deg}60%{rotate:12deg}80%{rotate:-6deg}100%{rotate:0deg}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(128,128,128,.45)}100%{box-shadow:0 0 0 22px rgba(128,128,128,0)}}
+@keyframes pop{0%{scale:.5}60%{scale:1.35}100%{scale:1}}
+.note{margin-top:12px;font-size:13px;line-height:1.8;color:var(--mute);text-align:center}
+footer{text-align:center;margin-top:28px;color:var(--mute);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
