@@ -49,5 +49,8 @@ export default{
         ctx.waitUntil(push(v.sub,env).then(res=>{console.log("push",res.status);if(res.status===404||res.status===410)return env.SUBS.delete(k.name)}));
       }catch(e){console.log(String(e))}
     }
-  }
+  }window.addEventListener("change", () => {
+  window.syncAdhkarSchedule().catch(() => {});
+});
+
 };
