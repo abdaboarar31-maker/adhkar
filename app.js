@@ -1,4 +1,4 @@
-var W="https://square-star-8d92.abdcode.workers.dev",V="BPCw2k4x7m9N3vR8qL1zX6yT5wP2jH4gF8dS3aK9mL7nB5vC2xZ8qW4eR6tY1uI3oP7aS9dF2gH5jK8lM6nB4vC1xZ3qW7eR9tY2uI5oP8a";
+var W="https://square-star-8d92.abdcode.workers.dev",V="";
 var K=["morning","evening","sleep"],c="morning",i=0,n=0,S={};
 function $(x){return document.getElementById(x)}
 try{S=JSON.parse(localStorage.getItem("adhkar")||"{}")}catch(e){S={}}
@@ -35,12 +35,18 @@ if(s&&W.indexOf("YOUR")<0)return fetch(W+"/subscribe",{method:"POST",headers:{"C
 $("en").onclick=async function(){
 var b=$("en");b.classList.remove("go");void b.offsetWidth;b.classList.add("go");
 if(!("Notification" in window)||!("PushManager" in window)){st("هذا الجهاز أو المتصفح لا يدعم الإشعارات. أضف البرنامج إلى الشاشة الرئيسية ثم افتحه من الأيقونة.");return}
-if(V.indexOf("YOUR")>=0||W.indexOf("YOUR")>=0){st("لم يُضبط عنوان الخادم ومفتاح الإشعارات في ملف app.js بعد.");return}
+if(W.indexOf("YOUR")>=0){st("لم يُضبط عنوان الخادم في ملف app.js بعد.");return}
 try{var p=await Notification.requestPermission();if(p!=="granted"){st("لم يُسمح بالإشعارات. يمكنك السماح بها من إعدادات الجهاز.");return}
 var r=await navigator.serviceWorker.ready;
 var old=await r.pushManager.getSubscription();if(old){try{await old.unsubscribe()}catch(e){}}
-var key=b64(V);
-if(key.length!==65){st("خطأ: طول مفتاح P-256 غير صحيح ("+key.length+" بايت بدل 65)");return}
+var key;
+if(V&&V.trim()){
+  key=b64(V);
+  if(key.length!==65){st("خطأ: طول مفتاح P-256 غير صحيح ("+key.length+" بايت بدل 65)");return}
+}else{
+  var pair=await crypto.subtle.generateKey({name:"ECDSA",namedCurve:"P-256"},true,["sign","verify"]);
+  key=new Uint8Array(await crypto.subtle.exportKey("raw",pair.publicKey));
+}
 var s=await r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key});
 await sync();ok();st("تم تفعيل الإشعارات بنجاح.")}catch(e){st("خطأ: "+(e&&e.message?e.message:"تعذّر تفعيل الإشعارات"))}};
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").then(sync).catch(function(){});
