@@ -23,15 +23,17 @@ $("th").onclick=function(){dk=!dk;th()};th();
 function b64(s){var p="=".repeat((4-s.length%4)%4),r=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from(r,function(x){return x.charCodeAt(0)})}
 function sync(){if(!navigator.serviceWorker)return;
 try{caches.open("adhkar-set").then(function(x){x.put("/adhkar-settings",new Response(JSON.stringify(S)))})}catch(e){}
-navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription()}).then(function(s){
-if(s&&W.indexOf("YOUR")<0)fetch(W+"/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sub:s,settings:S,tz:Intl.DateTimeFormat().resolvedOptions().timeZone})}).catch(function(){})}).catch(function(){})}
+return navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription()}).then(function(s){
+if(s&&W.indexOf("YOUR")<0)return fetch(W+"/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sub:s,settings:S,tz:Intl.DateTimeFormat().resolvedOptions().timeZone})})}).catch(function(){})}
 $("en").onclick=async function(){
 var b=$("en");b.classList.remove("go");void b.offsetWidth;b.classList.add("go");
 if(!("Notification" in window)||!("PushManager" in window)){st("هذا الجهاز أو المتصفح لا يدعم الإشعارات. أضف البرنامج إلى الشاشة الرئيسية ثم افتحه من الأيقونة.");return}
 if(V.indexOf("YOUR")>=0||W.indexOf("YOUR")>=0){st("لم يُضبط عنوان الخادم ومفتاح الإشعارات في ملف app.js بعد.");return}
 try{var p=await Notification.requestPermission();if(p!=="granted"){st("لم يُسمح بالإشعارات. يمكنك السماح بها من إعدادات الجهاز.");return}
-var r=await navigator.serviceWorker.ready;var s=await r.pushManager.getSubscription()||await r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64(V)});
-await sync();ok();st("تم تفعيل الإشعارات بنجاح.")}catch(e){st("تعذّر تفعيل الإشعارات. حاول مرة أخرى.")}};
+var r=await navigator.serviceWorker.ready;
+var old=await r.pushManager.getSubscription();if(old){try{await old.unsubscribe()}catch(e){}}
+var s=await r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64(V)});
+await sync();ok();st("تم تفعيل الإشعارات بنجاح.")}catch(e){st("خطأ: "+(e&&e.message?e.message:"تعذّر تفعيل الإشعارات"))}};
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").then(sync).catch(function(){});
 if(!(matchMedia("(display-mode: standalone)").matches||navigator.standalone))$("hint").hidden=false;
 show();
