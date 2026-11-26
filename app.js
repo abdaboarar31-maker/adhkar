@@ -1,4 +1,4 @@
-var W="https://square-star-8d92.abdcode.workers.dev",V="";
+var W="https://adhkar-push.abdcode.workers.dev",V="BC5lF_V2_DsbX6E9DCr86ltDU_e3OCpCC3x8IRb74EGFWGBsXPxCMerKyM_pxEhyV7iiSumQZB0V3MteNX1LEIo";
 var K=["morning","evening","sleep"],c="morning",i=0,n=0,S={};
 function $(x){return document.getElementById(x)}
 try{S=JSON.parse(localStorage.getItem("adhkar")||"{}")}catch(e){S={}}
@@ -20,35 +20,18 @@ var R=document.documentElement,dk=matchMedia("(prefers-color-scheme:dark)").matc
 function th(){R.dataset.theme=dk?"dark":"light";$("th").textContent=dk?"☀":"☾"}
 $("th").onclick=function(){dk=!dk;th()};th();
 
-function b64(s){
-  var clean=String(s||"").trim().replace(/\s+/g,"").replace(/-/g,"+").replace(/_/g,"/");
-  var pad="=".repeat((4-(clean.length%4))%4);
-  var raw=atob(clean+pad);
-  var arr=new Uint8Array(raw.length);
-  for(var j=0;j<raw.length;j++)arr[j]=raw.charCodeAt(j);
-  return arr;
-}
+function b64(s){var p="=".repeat((4-s.length%4)%4),r=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from(r,function(x){return x.charCodeAt(0)})}
 function sync(){if(!navigator.serviceWorker)return;
 try{caches.open("adhkar-set").then(function(x){x.put("/adhkar-settings",new Response(JSON.stringify(S)))})}catch(e){}
-return navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription()}).then(function(s){
-if(s&&W.indexOf("YOUR")<0)return fetch(W+"/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sub:s,settings:S,tz:Intl.DateTimeFormat().resolvedOptions().timeZone})})}).catch(function(){})}
+navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription()}).then(function(s){
+if(s&&W.indexOf("YOUR")<0)fetch(W+"/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sub:s,settings:S,tz:Intl.DateTimeFormat().resolvedOptions().timeZone})}).catch(function(){})}).catch(function(){})}
 $("en").onclick=async function(){
 var b=$("en");b.classList.remove("go");void b.offsetWidth;b.classList.add("go");
 if(!("Notification" in window)||!("PushManager" in window)){st("هذا الجهاز أو المتصفح لا يدعم الإشعارات. أضف البرنامج إلى الشاشة الرئيسية ثم افتحه من الأيقونة.");return}
-if(W.indexOf("YOUR")>=0){st("لم يُضبط عنوان الخادم في ملف app.js بعد.");return}
+if(V.indexOf("YOUR")>=0||W.indexOf("YOUR")>=0){st("لم يُضبط عنوان الخادم ومفتاح الإشعارات في ملف app.js بعد.");return}
 try{var p=await Notification.requestPermission();if(p!=="granted"){st("لم يُسمح بالإشعارات. يمكنك السماح بها من إعدادات الجهاز.");return}
-var r=await navigator.serviceWorker.ready;
-var old=await r.pushManager.getSubscription();if(old){try{await old.unsubscribe()}catch(e){}}
-var key;
-if(V&&V.trim()){
-  key=b64(V);
-  if(key.length!==65){st("خطأ: طول مفتاح P-256 غير صحيح ("+key.length+" بايت بدل 65)");return}
-}else{
-  var pair=await crypto.subtle.generateKey({name:"ECDSA",namedCurve:"P-256"},true,["sign","verify"]);
-  key=new Uint8Array(await crypto.subtle.exportKey("raw",pair.publicKey));
-}
-var s=await r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key});
-await sync();ok();st("تم تفعيل الإشعارات بنجاح.")}catch(e){st("خطأ: "+(e&&e.message?e.message:"تعذّر تفعيل الإشعارات"))}};
+var r=await navigator.serviceWorker.ready;var s=await r.pushManager.getSubscription()||await r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64(V)});
+await sync();ok();st("تم تفعيل الإشعارات بنجاح.")}catch(e){st("تعذّر تفعيل الإشعارات. حاول مرة أخرى.")}};
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").then(sync).catch(function(){});
 if(!(matchMedia("(display-mode: standalone)").matches||navigator.standalone))$("hint").hidden=false;
 show();
