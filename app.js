@@ -1,4 +1,4 @@
-var W="https://adhkar-push.abdcode.workers.dev",V="BML_jNhfyPXrEkyhtViJ_tGenuXufsE1tnoUoZL9WPnkovSxDd3gLU4A3bwaYKV_ssTcOdSlHeI61PoPADw7gOw";
+var W="https://square-star-8d92.abdcode.workers.dev",V="BJhu9gl37CrMFnD4NBW1KUUeDd8aZR6pTebs0C8rKT6N7LZBJT81SjbWLlIRt8_3adThX0NI6abEMBkz9Tk2kfY";
 var K=["morning","evening","sleep"],c="morning",i=0,n=0,S={};
 function $(x){return document.getElementById(x)}
 try{S=JSON.parse(localStorage.getItem("adhkar")||"{}")}catch(e){S={}}
