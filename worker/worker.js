@@ -1,10 +1,12 @@
+// تنبيه: هذا الملف يحتوي المفتاح الخاص، لا ترفعه إلى GitHub
+const PRV="e5w1yIhZOfrR6fi-pXNxt8xaz__jP8AdfgZkdKXbgHQ";
 const PUB="BC5lF_V2_DsbX6E9DCr86ltDU_e3OCpCC3x8IRb74EGFWGBsXPxCMerKyM_pxEhyV7iiSumQZB0V3MteNX1LEIo";
 const E=new TextEncoder();
 const b64u=a=>btoa(String.fromCharCode(...new Uint8Array(a))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 const unb=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")),c=>c.charCodeAt(0));
 async function jwt(aud,env){
   const pub=unb(PUB);
-  const key=await crypto.subtle.importKey("jwk",{kty:"EC",crv:"P-256",x:b64u(pub.slice(1,33)),y:b64u(pub.slice(33,65)),d:(env.VAPID_PRIVATE||"").replace(/[\s"']/g,"")},{name:"ECDSA",namedCurve:"P-256"},false,["sign"]);
+  const key=await crypto.subtle.importKey("jwk",{kty:"EC",crv:"P-256",x:b64u(pub.slice(1,33)),y:b64u(pub.slice(33,65)),d:PRV},{name:"ECDSA",namedCurve:"P-256"},false,["sign"]);
   const h=b64u(E.encode(JSON.stringify({typ:"JWT",alg:"ES256"})));
   const p=b64u(E.encode(JSON.stringify({aud,exp:Math.floor(Date.now()/1000)+43200,sub:"https://abdaboarar31-maker.github.io"})));
   const s=await crypto.subtle.sign({name:"ECDSA",hash:"SHA-256"},key,E.encode(h+"."+p));
@@ -32,7 +34,7 @@ export default{
         const v=JSON.parse(await env.SUBS.get(k.name)||"null");if(!v)continue;
         try{const res=await push(v.sub,env);out.push({host:new URL(v.sub.endpoint).host,status:res.status,body:(await res.text()).slice(0,200)})}catch(e){out.push({error:String(e)})}
       }
-      return new Response(JSON.stringify({v:"v3",privLen:(env.VAPID_PRIVATE||"").replace(/[\s"']/g,"").length,subscribers:keys.length,results:out},null,1),{headers:{...H,"Content-Type":"application/json"}});
+      return new Response(JSON.stringify({v:"v4",privLen:(env.VAPID_PRIVATE||"").replace(/[\s"']/g,"").length,subscribers:keys.length,results:out},null,1),{headers:{...H,"Content-Type":"application/json"}});
     }
     return new Response("Adhkar push worker",{headers:H});
   },
