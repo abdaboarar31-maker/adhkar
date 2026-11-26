@@ -51,8 +51,50 @@ export default{
     }
   }
   
-  window.addEventListener("change", () => {
+function collectLiveSettings() {
+  const settings = {
+    morning: { on: false, t: "" },
+    evening: { on: false, t: "" },
+    sleep: { on: false, t: "" }
+  };
+
+  document.querySelectorAll("input, select").forEach((el) => {
+    const id = (el.id || el.name || "").toLowerCase();
+    const key = id.includes("morn") ? "morning" : id.includes("even") ? "evening" : id.includes("sleep") || id.includes("night") ? "sleep" : null;
+    if (!key) return;
+
+    if (el.type === "checkbox") settings[key].on = Boolean(el.checked);
+    else if (el.value) settings[key].t = el.value.slice(0, 5);
+  });
+
+  return settings;
+}
+
+window.syncAdhkarSchedule = async function (customSub) {
+  if (!("serviceWorker" in navigator)) return;
+  const reg = await navigator.serviceWorker.ready;
+  const sub = customSub || (await reg.pushManager.getSubscription());
+  if (!sub) return;
+
+  const vapid = await getOrCreateVapidKeys();
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Jerusalem";
+  const settings = collectLiveSettings();
+
+  await fetch(`${WORKER_URL}/subscribe`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      sub: sub.toJSON ? sub.toJSON() : sub,
+      vapid,
+      settings,
+      tz
+    })
+  });
+};
+
+window.addEventListener("change", () => {
   window.syncAdhkarSchedule().catch(() => {});
 });
-
-};
+window.addEventListener("input", () => {
+  window.syncAdhkarSchedule().catch(() => {});
+});
