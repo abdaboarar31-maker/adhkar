@@ -36,8 +36,8 @@ var r=await navigator.serviceWorker.ready;var s=await r.pushManager.getSubscript
 await sync();ok();st("تم تفعيل الإشعارات بنجاح.")}catch(e){st("تعذّر تفعيل الإشعارات. حاول مرة أخرى.")}};
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").then(sync).catch(function(){});
 if(!(matchMedia("(display-mode: standalone)").matches||navigator.standalone))$("hint").hidden=false;
-$("vr").textContent="الإصدار "+ar(VER);
-$("lk").innerHTML=[["موقعي",SITE],["قناتي على يوتيوب",CH]].filter(function(x){return x[1]}).map(function(x){return '<a href="'+x[1]+'" target="_blank" rel="noopener">'+x[0]+'</a>'}).join("");
+$("vr").textContent="الإصدار "+VER;
+$("lk").innerHTML=[["موقعي",SITE,'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>'],["قناتي على يوتيوب",CH,'<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5 3-5 3z"/></svg>']].filter(function(x){return x[1]}).map(function(x){return '<a href="'+x[1]+'" target="_blank" rel="noopener">'+x[2]+x[0]+'</a>'}).join("");
 $("inf").onclick=function(){$("sh").classList.add("on");$("sh").setAttribute("aria-hidden","false")};
 function cl(){$("sh").classList.remove("on");$("sh").setAttribute("aria-hidden","true")}
 $("sx").onclick=cl;$("sh").onclick=function(e){if(e.target===this)cl()};

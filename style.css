@@ -81,3 +81,14 @@ footer{margin-top:14px}
 .box p.ver{font-size:12px;margin-top:6px}
 .lk{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0 8px}
 .lk a{background:var(--a2);color:var(--ink);text-decoration:none;font:500 14px Tajawal;padding:9px 16px;border-radius:12px}
+
+.app{display:flex;flex-direction:column;overflow:hidden;padding:6px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+header{padding:4px 2px 8px}
+.ring{flex:none;width:min(170px,22dvh);height:min(170px,22dvh);margin:8px auto 4px}
+.ring b{font-size:min(38px,5dvh)}
+.dhikr{flex:1;min-height:0;max-height:none;display:flex;flex-direction:column;overflow-y:auto}
+.dhikr>:first-child{margin-top:auto}.dhikr>:last-child{margin-bottom:auto}
+.nav{flex:none}.set{flex:none}
+.note{margin-top:6px;font-size:11px}
+.lk a{display:inline-flex;align-items:center;gap:6px}
+.box p.cp{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;margin-top:6px}
