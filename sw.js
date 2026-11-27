@@ -1,5 +1,5 @@
 importScripts("adhkar.js");
-var C="adhkar-v4",F=["./","index.html","style.css","app.js","adhkar.js","manifest.json","icon-192.png","icon-512.png"];
+var C="adhkar-v5",F=["./","index.html","style.css","app.js","adhkar.js","manifest.json","icon-192.png","icon-512.png"];
 self.addEventListener("install",function(e){e.waitUntil(caches.open(C).then(function(x){return x.addAll(F)}));self.skipWaiting()});
 self.addEventListener("activate",function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(x){return x!==C&&x!=="adhkar-set"}).map(function(x){return caches.delete(x)}))}));self.clients.claim()});
 self.addEventListener("fetch",function(e){if(e.request.method!=="GET")return;e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request)}))});
@@ -11,28 +11,29 @@ function run(k){var t=Date.now();if(last[k]&&t-last[k]<45000)return Promise.reso
 return L.reduce(function(p,d,j){return p.then(function(){
 return self.registration.showNotification(D[k].n+" ("+ar(j+1)+"/"+ar(L.length)+")",{body:d[0]+"\n("+d[2]+")",tag:"adhkar-"+k+"-"+j,lang:"ar",dir:"rtl",icon:"icon-192.png",badge:"icon-192.png",silent:true,data:{k:k}})
 }).then(function(){return new Promise(function(r){setTimeout(r,j<L.length-1?3000:0)})})},Promise.resolve())}
+
+var shownBroadcastId=0;
 self.addEventListener("push",function(e){
-  var p=Promise.resolve();
-  if(e.data){
-    p=e.data.json().catch(function(){return e.data.text().then(function(t){return t?{body:t}:null})}).then(function(d){
-      if(d&&(d.body||d.title)){
-        return self.registration.showNotification(d.title||"أذكاري",{
-          body:d.body||"",
-          tag:"adhkar-broadcast-"+Date.now(),
-          lang:"ar",
-          dir:"rtl",
-          icon:"icon-192.png",
-          badge:"icon-192.png",
-          data:{url:d.url||"./"}
-        });
-      }
-      return pick().then(run);
-    });
-  }else{
-    p=pick().then(run);
-  }
+  var p=fetch("https://adhkar.abdcode.workers.dev/latest-broadcast").then(function(r){return r.json()}).then(function(b){
+    if(b&&b.body&&b.id&&b.id!==shownBroadcastId&&(Date.now()-b.id)<120000){
+      shownBroadcastId=b.id;
+      return self.registration.showNotification(b.title||"أذكاري",{
+        body:b.body,
+        tag:"adhkar-broadcast-"+b.id,
+        lang:"ar",
+        dir:"rtl",
+        icon:"icon-192.png",
+        badge:"icon-192.png",
+        data:{url:b.url||"./"}
+      });
+    }
+    return pick().then(run);
+  }).catch(function(){
+    return pick().then(run);
+  });
   e.waitUntil(p);
 });
+
 self.addEventListener("notificationclick",function(e){
   e.notification.close();
   var data=e.notification.data||{};
