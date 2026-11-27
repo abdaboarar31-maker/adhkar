@@ -17,7 +17,7 @@
 </head>
 <body data-c="morning">
 <main class="app">
-<header><h1>أذكاري</h1><div class="hb"><button class="ic" id="en" aria-label="تفعيل الإشعارات"><svg class="bell" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button><button class="ic" id="th" aria-label="تبديل الوضع">◐</button></div></header>
+<header><h1>أذكاري</h1><div class="hb"><button class="ic" id="inf" aria-label="عن البرنامج"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></button><button class="ic" id="en" aria-label="تفعيل الإشعارات"><svg class="bell" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button><button class="ic" id="th" aria-label="تبديل الوضع">◐</button></div></header>
 <div class="tabs" role="tablist" id="tabs"></div>
 <div class="ring" id="ring" role="button" aria-label="اضغط للعدّ">
 <svg viewBox="0 0 120 120"><circle class="tr" cx="60" cy="60" r="52"/><circle class="pg" id="pg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
@@ -27,10 +27,9 @@
 
 <section class="set" id="set"></section>
 <p class="note" id="hint" hidden>لتفعيل الإشعارات: أضف البرنامج إلى الشاشة الرئيسية ثم افتحه من الأيقونة.</p>
-<h2>عن البرنامج</h2>
-<section class="about"><p>«أذكاري» برنامج خفيف يذكّرك بأذكار الصباح والمساء وقبل النوم عبر إشعارات مكتوبة في الأوقات التي تختارها.</p></section>
-<footer>© ٢٠٢٦ Abd Code. جميع الحقوق محفوظة.</footer>
+
 </main>
+<div class="sheet" id="sh" aria-hidden="true"><div class="box" role="dialog" aria-label="عن البرنامج"><button class="x" id="sx" aria-label="إغلاق">✕</button><h3>أذكاري</h3><p>«أذكاري» برنامج خفيف يذكّرك بأذكار الصباح والمساء وقبل النوم عبر إشعارات مكتوبة في الأوقات التي تختارها.</p><div class="lk" id="lk"></div><p class="ver" id="vr"></p><p class="ver">© ٢٠٢٦ Abd Code. جميع الحقوق محفوظة.</p></div></div>
 <div class="toast" id="st" role="status"></div>
 <script src="adhkar.js"></script>
 <script src="app.js"></script>

@@ -1,4 +1,5 @@
 var W="https://adhkar-push.abdcode.workers.dev",V="BAOAcp9wpG9eMNft_BFzXL3rvb6jD0ZoaPYYfLbHMjOzjmecMUrQnOGlnBRGlxs5JY0cOvBVhUsl7PuEFkr_fsk";
+var VER="1.0",SITE="https://abdcode.pages.dev",CH="";
 var K=["morning","evening","sleep"],c="morning",i=0,n=0,S={},T="auto",dev="x",mq=matchMedia("(prefers-color-scheme:dark)");
 function $(x){return document.getElementById(x)}
 try{S=JSON.parse(localStorage.getItem("adhkar")||"{}");T=localStorage.getItem("adhkar-theme")||"auto";dev=localStorage.getItem("adhkar-dev");if(!dev){dev=Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem("adhkar-dev",dev)}}catch(e){S=S||{};dev=dev||"x"}
@@ -35,5 +36,10 @@ var r=await navigator.serviceWorker.ready;var s=await r.pushManager.getSubscript
 await sync();ok();st("تم تفعيل الإشعارات بنجاح.")}catch(e){st("تعذّر تفعيل الإشعارات. حاول مرة أخرى.")}};
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").then(sync).catch(function(){});
 if(!(matchMedia("(display-mode: standalone)").matches||navigator.standalone))$("hint").hidden=false;
+$("vr").textContent="الإصدار "+ar(VER);
+$("lk").innerHTML=[["موقعي",SITE],["قناتي على يوتيوب",CH]].filter(function(x){return x[1]}).map(function(x){return '<a href="'+x[1]+'" target="_blank" rel="noopener">'+x[0]+'</a>'}).join("");
+$("inf").onclick=function(){$("sh").classList.add("on");$("sh").setAttribute("aria-hidden","false")};
+function cl(){$("sh").classList.remove("on");$("sh").setAttribute("aria-hidden","true")}
+$("sx").onclick=cl;$("sh").onclick=function(e){if(e.target===this)cl()};
 th();show();rs();
 if("Notification" in window&&Notification.permission==="granted")ok();
