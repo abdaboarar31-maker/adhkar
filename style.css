@@ -92,3 +92,5 @@ header{padding:4px 2px 8px}
 .note{margin-top:6px;font-size:11px}
 .lk a{display:inline-flex;align-items:center;gap:6px}
 .box p.cp{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;margin-top:6px}
+
+.logo{border-radius:7px;display:block}
